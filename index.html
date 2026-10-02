@@ -1,12 +1,1668 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PR1ME — Can We Build?</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#202020" />
+
+  <title>PR1ME — Can We Build a Digital Agency From Almost Nothing?</title>
+
+  <meta
+    name="description"
+    content="A community-supported experiment from Morocco. Follow the journey of building PR1ME from almost nothing."
+  />
+
+  <style>
+    :root {
+      --black: #202020;
+      --light: #e0e0e0;
+      --gold: #c3a330;
+      --muted: #8d8d8d;
+      --line: rgba(224, 224, 224, 0.16);
+      --max: 1180px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--black);
+    }
+
+    body {
+      background: var(--black);
+      color: var(--light);
+      font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+      overflow-x: hidden;
+      line-height: 1.5;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font: inherit;
+    }
+
+    /* =========================
+       LOADER
+    ========================= */
+
+    .loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition:
+        opacity 0.8s ease,
+        visibility 0.8s ease;
+    }
+
+    .loader.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .loader-logo {
+      width: 110px;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        opacity: 0.45;
+      }
+
+      50% {
+        opacity: 1;
+      }
+    }
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 22px 20px;
+      transition:
+        background 0.4s ease,
+        backdrop-filter 0.4s ease;
+    }
+
+    header.scrolled {
+      background: rgba(32, 32, 32, 0.82);
+      backdrop-filter: blur(14px);
+    }
+
+    .nav {
+      width: 100%;
+      max-width: var(--max);
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      width: 82px;
+      display: block;
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .language-switch {
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--light);
+      padding: 8px 11px;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      transition:
+        border-color 0.3s ease,
+        color 0.3s ease;
+    }
+
+    .language-switch:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    /* =========================
+       GENERAL
+    ========================= */
+
+    section {
+      position: relative;
+      padding: 120px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin: auto;
+    }
+
+    .section-number {
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .section-line {
+      height: 1px;
+      width: 100%;
+      background: var(--line);
+      margin: 35px 0;
+      transform-origin: left;
+    }
+
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      min-height: 100svh;
+      padding-top: 150px;
+      padding-bottom: 50px;
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      display: grid;
+      gap: 50px;
+    }
+
+    .hero-title {
+      font-size: clamp(48px, 13vw, 120px);
+      line-height: 0.9;
+      letter-spacing: -0.055em;
+      font-weight: 800;
+      max-width: 1050px;
+    }
+
+    .hero-title span {
+      display: block;
+      overflow: hidden;
+    }
+
+    .hero-title .gold {
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      max-width: 390px;
+      color: #b8b8b8;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .hero-bottom {
+      display: grid;
+      gap: 30px;
+      margin-top: 15px;
+    }
+
+    .milestone-label {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    .milestone-number {
+      font-size: clamp(52px, 15vw, 110px);
+      line-height: 0.95;
+      letter-spacing: -0.06em;
+      font-weight: 700;
+    }
+
+    .progress-wrap {
+      margin-top: 20px;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(224, 224, 224, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--gold);
+      transition: width 1.5s ease;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: fit-content;
+      min-height: 48px;
+      padding: 0 22px;
+      border: 1px solid var(--gold);
+      color: var(--light);
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition:
+        background 0.35s ease,
+        color 0.35s ease,
+        transform 0.35s ease;
+    }
+
+    .cta:hover {
+      background: var(--gold);
+      color: var(--black);
+      transform: translateY(-2px);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 25px;
+      right: 20px;
+      writing-mode: vertical-rl;
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      animation: float 2s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(8px);
+      }
+    }
+
+    /* =========================
+       IDEA
+    ========================= */
+
+    .idea {
+      background: var(--light);
+      color: var(--black);
+    }
+
+    .idea .section-number {
+      color: var(--gold);
+    }
+
+    .idea .section-line {
+      background: rgba(32, 32, 32, 0.15);
+    }
+
+    .idea-title {
+      font-size: clamp(42px, 11vw, 100px);
+      line-height: 0.92;
+      letter-spacing: -0.055em;
+      max-width: 900px;
+      font-weight: 750;
+    }
+
+    .idea-copy {
+      max-width: 570px;
+      margin-top: 55px;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    .idea-copy strong {
+      font-weight: 700;
+    }
+
+    /* =========================
+       MILESTONE
+    ========================= */
+
+    .milestone {
+      overflow: hidden;
+    }
+
+    .huge-number {
+      font-size: clamp(100px, 30vw, 330px);
+      line-height: 0.75;
+      letter-spacing: -0.09em;
+      font-weight: 800;
+      color: var(--light);
+      white-space: nowrap;
+      transform: translateX(-3%);
+    }
+
+    .allocation {
+      margin-top: 80px;
+      display: grid;
+      gap: 0;
+    }
+
+    .allocation-item {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 20px;
+      align-items: end;
+      padding: 28px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .allocation-item:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .allocation-amount {
+      font-size: clamp(32px, 8vw, 65px);
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .allocation-name {
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-align: right;
+    }
+
+    .document-note {
+      margin-top: 35px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       LAPTOP
+    ========================= */
+
+    .laptop {
+      background: var(--gold);
+      color: var(--black);
+    }
+
+    .laptop .section-number {
+      color: var(--black);
+      opacity: 0.6;
+    }
+
+    .laptop-title {
+      font-size: clamp(55px, 14vw, 135px);
+      line-height: 0.86;
+      letter-spacing: -0.065em;
+      max-width: 900px;
+      font-weight: 800;
+    }
+
+    .laptop-copy {
+      max-width: 620px;
+      margin-top: 60px;
+      font-size: 18px;
+      line-height: 1.65;
+    }
+
+    /* =========================
+       SERVICES
+    ========================= */
+
+    .services-title {
+      font-size: clamp(48px, 12vw, 120px);
+      line-height: 0.86;
+      letter-spacing: -0.065em;
+      max-width: 900px;
+    }
+
+    .services {
+      margin-top: 70px;
+    }
+
+    .service {
+      padding: 25px 0;
+      border-top: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 55px 1fr;
+      gap: 15px;
+    }
+
+    .service:last-child {
+      border-bottom: 1px solid var(--line);
+    }
+
+    .service-number {
+      color: var(--gold);
+      font-size: 12px;
+    }
+
+    .service-name {
+      font-size: clamp(27px, 7vw, 52px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+      font-weight: 650;
+    }
+
+    .service-description {
+      grid-column: 2;
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: -5px;
+    }
+
+    .statement {
+      margin-top: 100px;
+      font-size: clamp(28px, 7vw, 65px);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      max-width: 900px;
+    }
+
+    .statement strong {
+      color: var(--gold);
+    }
+
+    /* =========================
+       TIMELINE
+    ========================= */
+
+    .timeline-title {
+      font-size: clamp(50px, 13vw, 130px);
+      line-height: 0.85;
+      letter-spacing: -0.07em;
+    }
+
+    .timeline {
+      margin-top: 80px;
+      position: relative;
+    }
+
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 14px;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .timeline-progress {
+      position: absolute;
+      left: 14px;
+      top: 0;
+      width: 1px;
+      height: 0;
+      background: var(--gold);
+      transition: height 0.5s ease;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding: 0 0 65px 50px;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: 8px;
+      top: 3px;
+      width: 13px;
+      height: 13px;
+      border: 1px solid var(--muted);
+      border-radius: 50%;
+      background: var(--black);
+      transition:
+        background 0.4s ease,
+        border-color 0.4s ease,
+        transform 0.4s ease;
+    }
+
+    .timeline-item.active .timeline-dot {
+      background: var(--gold);
+      border-color: var(--gold);
+      transform: scale(1.25);
+    }
+
+    .timeline-number {
+      color: var(--gold);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      margin-bottom: 8px;
+    }
+
+    .timeline-name {
+      font-size: clamp(27px, 7vw, 52px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    .timeline-status {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-top: 12px;
+    }
+
+    /* =========================
+       TRANSPARENCY
+    ========================= */
+
+    .transparency {
+      background: var(--light);
+      color: var(--black);
+    }
+
+    .transparency .section-number {
+      color: var(--gold);
+    }
+
+    .transparency .section-line {
+      background: rgba(32, 32, 32, 0.16);
+    }
+
+    .transparency-title {
+      font-size: clamp(55px, 14vw, 140px);
+      line-height: 0.82;
+      letter-spacing: -0.07em;
+      max-width: 950px;
+    }
+
+    .transparency-copy {
+      max-width: 500px;
+      margin-top: 45px;
+      font-size: 17px;
+    }
+
+    .stats {
+      margin-top: 70px;
+      display: grid;
+      gap: 0;
+    }
+
+    .stat {
+      border-top: 1px solid rgba(32, 32, 32, 0.18);
+      padding: 24px 0;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .stat:last-child {
+      border-bottom: 1px solid rgba(32, 32, 32, 0.18);
+    }
+
+    .stat-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      opacity: 0.55;
+    }
+
+    .stat-value {
+      font-size: clamp(25px, 6vw, 45px);
+      line-height: 1;
+      letter-spacing: -0.04em;
+    }
+
+    /* =========================
+       SUPPORT
+    ========================= */
+
+    .support-title {
+      font-size: clamp(55px, 14vw, 140px);
+      line-height: 0.82;
+      letter-spacing: -0.07em;
+      max-width: 1000px;
+    }
+
+    .support-grid {
+      margin-top: 75px;
+      display: grid;
+      gap: 1px;
+      background: var(--line);
+    }
+
+    .support-card {
+      background: var(--black);
+      padding: 30px 24px;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition:
+        background 0.4s ease,
+        transform 0.4s ease;
+    }
+
+    .support-card:hover {
+      background: #292929;
+      transform: translateY(-3px);
+    }
+
+    .support-number {
+      color: var(--gold);
+      font-size: 11px;
+    }
+
+    .support-name {
+      font-size: 30px;
+      letter-spacing: -0.04em;
+    }
+
+    .support-description {
+      color: var(--muted);
+      font-size: 13px;
+      max-width: 280px;
+    }
+
+    /* =========================
+       FINAL
+    ========================= */
+
+    .final {
+      min-height: 85svh;
+      display: flex;
+      align-items: center;
+      background: var(--black);
+    }
+
+    .final-title {
+      font-size: clamp(65px, 17vw, 170px);
+      line-height: 0.82;
+      letter-spacing: -0.075em;
+      font-weight: 800;
+    }
+
+    .final-title span {
+      display: block;
+    }
+
+    .final-title .gold {
+      color: var(--gold);
+    }
+
+    .final-meta {
+      margin-top: 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .final-question {
+      font-size: 30px;
+      letter-spacing: -0.04em;
+    }
+
+    .instagram {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* =========================
+       FOOTER
+    ========================= */
+
+    footer {
+      padding: 25px 20px 35px;
+      border-top: 1px solid var(--line);
+    }
+
+    .footer-inner {
+      max-width: var(--max);
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .footer-logo {
+      width: 65px;
+    }
+
+    .footer-copy {
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* =========================
+       REVEALS
+    ========================= */
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(35px);
+      transition:
+        opacity 0.8s ease,
+        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .line-reveal {
+      transform: scaleX(0);
+      transition: transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .line-reveal.visible {
+      transform: scaleX(1);
+    }
+
+    /* =========================
+       DESKTOP
+    ========================= */
+
+    @media (min-width: 768px) {
+      header {
+        padding: 28px 35px;
+      }
+
+      section {
+        padding: 170px 35px;
+      }
+
+      .hero {
+        padding-top: 180px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 360px;
+        align-items: end;
+        gap: 70px;
+      }
+
+      .hero-title {
+        grid-column: 1 / -1;
+      }
+
+      .hero-bottom {
+        grid-template-columns: 1fr 1fr;
+        align-items: end;
+        margin-top: 20px;
+      }
+
+      .hero-subtitle {
+        align-self: end;
+      }
+
+      .allocation-item {
+        grid-template-columns: 240px 1fr auto;
+      }
+
+      .allocation-name {
+        text-align: left;
+      }
+
+      .support-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .support-card {
+        min-height: 260px;
+      }
+
+      .footer-inner {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+    }
+
+    /* =========================
+       REDUCED MOTION
+    ========================= */
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
 </head>
+
 <body>
-  <h1>PR1ME</h1>
-  <p>Can we build a digital agency from almost nothing?</p>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <img
+      src="assets/pr1me-dark.svg"
+      alt="PR1ME"
+      class="loader-logo"
+    />
+  </div>
+
+  <!-- HEADER -->
+  <header id="header">
+    <nav class="nav">
+      <a href="#top">
+        <img
+          src="assets/pr1me-dark.svg"
+          alt="PR1ME"
+          class="logo"
+        />
+      </a>
+
+      <div class="nav-right">
+        <button class="language-switch" id="languageSwitch">
+          EN / عربي
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+
+    <!-- =========================
+         HERO
+    ========================= -->
+
+    <section class="hero">
+      <div class="container">
+
+        <div class="hero-grid">
+
+          <h1 class="hero-title">
+            <span class="reveal">CAN WE BUILD</span>
+            <span class="reveal">A DIGITAL</span>
+            <span class="reveal">AGENCY FROM</span>
+            <span class="reveal gold">ALMOST NOTHING?</span>
+          </h1>
+
+          <div class="hero-subtitle reveal">
+            A community-supported experiment from Morocco.
+          </div>
+
+          <div class="hero-bottom">
+
+            <div class="reveal">
+              <div class="milestone-label">
+                First milestone
+              </div>
+
+              <div class="milestone-number">
+                5,000 DH
+              </div>
+
+              <div class="progress-wrap">
+                <div class="progress-track">
+                  <div
+                    class="progress-fill"
+                    id="heroProgress"
+                  ></div>
+                </div>
+
+                <div class="progress-labels">
+                  <span>0 DH</span>
+                  <span>5,000 DH</span>
+                </div>
+              </div>
+            </div>
+
+            <a
+              href="#support"
+              class="cta reveal"
+            >
+              Support the build ↓
+            </a>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="scroll-indicator">
+        Scroll to explore
+      </div>
+    </section>
+
+
+    <!-- =========================
+         IDEA
+    ========================= -->
+
+    <section class="idea">
+      <div class="container">
+
+        <div class="section-number reveal">
+          01 / The Idea
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="idea-title reveal">
+          PR1ME IS AN ATTEMPT TO BUILD A DIGITAL AGENCY FROM ALMOST NOTHING.
+        </h2>
+
+        <div class="idea-copy reveal">
+          <p>
+            No big investment.
+            No established team.
+            No fancy office.
+          </p>
+
+          <br />
+
+          <p>
+            Just <strong>skills, a phone, an internet connection,
+            and the willingness to build.</strong>
+          </p>
+
+          <br />
+
+          <p>
+            This website is a living record of what happens next.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         MILESTONE
+    ========================= -->
+
+    <section class="milestone">
+      <div class="container">
+
+        <div class="section-number reveal">
+          02 / The First Milestone
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <div class="huge-number reveal">
+          5,000
+        </div>
+
+        <div class="allocation">
+
+          <div class="allocation-item reveal">
+            <div class="allocation-amount">
+              3,000 DH
+            </div>
+
+            <div class="allocation-name">
+              Laptop
+            </div>
+          </div>
+
+          <div class="allocation-item reveal">
+            <div class="allocation-amount">
+              2,000 DH
+            </div>
+
+            <div class="allocation-name">
+              Tools / Content / Launch
+            </div>
+          </div>
+
+        </div>
+
+        <p class="document-note reveal">
+          Every expense will be documented.
+        </p>
+
+        <br />
+
+        <a
+          href="#transparency"
+          class="cta reveal"
+        >
+          View transparency →
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         LAPTOP
+    ========================= -->
+
+    <section class="laptop">
+      <div class="container">
+
+        <div class="section-number reveal">
+          03 / Why a Laptop?
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="laptop-title reveal">
+          THE LAPTOP ISN'T THE BUSINESS.
+        </h2>
+
+        <div class="laptop-copy reveal">
+          <p>
+            PR1ME is being built with extremely limited resources.
+          </p>
+
+          <br />
+
+          <p>
+            A laptop is the first piece of infrastructure
+            that allows the business to operate properly.
+          </p>
+
+          <br />
+
+          <p>
+            The objective isn't to buy something impressive.
+            It's to create the tools needed to actually build.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         SERVICES
+    ========================= -->
+
+    <section>
+      <div class="container">
+
+        <div class="section-number reveal">
+          04 / What We're Building
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="services-title reveal">
+          PR1ME
+        </h2>
+
+        <div class="services">
+
+          <div class="service reveal">
+            <div class="service-number">01</div>
+
+            <div class="service-name">
+              WEB
+            </div>
+
+            <div class="service-description">
+              Websites & digital experiences
+            </div>
+          </div>
+
+          <div class="service reveal">
+            <div class="service-number">02</div>
+
+            <div class="service-name">
+              AI
+            </div>
+
+            <div class="service-description">
+              AI-powered solutions
+            </div>
+          </div>
+
+          <div class="service reveal">
+            <div class="service-number">03</div>
+
+            <div class="service-name">
+              MARKETING
+            </div>
+
+            <div class="service-description">
+              Digital marketing & growth
+            </div>
+          </div>
+
+          <div class="service reveal">
+            <div class="service-number">04</div>
+
+            <div class="service-name">
+              E-COMMERCE
+            </div>
+
+            <div class="service-description">
+              Online stores & commerce systems
+            </div>
+          </div>
+
+        </div>
+
+        <div class="statement reveal">
+          The goal isn't just to raise
+          <strong>5,000 DH.</strong>
+          <br />
+          The goal is to turn
+          <strong>5,000 DH</strong>
+          into a functioning agency.
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         BUILD
+    ========================= -->
+
+    <section>
+      <div class="container">
+
+        <div class="section-number reveal">
+          05 / The Build
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="timeline-title reveal">
+          WATCH<br />
+          IT HAPPEN.
+        </h2>
+
+        <div class="timeline" id="timeline">
+
+          <div class="timeline-progress" id="timelineProgress"></div>
+
+          <div class="timeline-item active reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">00</div>
+            <div class="timeline-name">The Idea</div>
+            <div class="timeline-status">Complete</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">01</div>
+            <div class="timeline-name">5,000 DH</div>
+            <div class="timeline-status">Upcoming</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">02</div>
+            <div class="timeline-name">First Laptop</div>
+            <div class="timeline-status">Upcoming</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">03</div>
+            <div class="timeline-name">First Client</div>
+            <div class="timeline-status">Upcoming</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">04</div>
+            <div class="timeline-name">First Project</div>
+            <div class="timeline-status">Upcoming</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">05</div>
+            <div class="timeline-name">First Revenue</div>
+            <div class="timeline-status">Upcoming</div>
+          </div>
+
+          <div class="timeline-item reveal">
+            <div class="timeline-dot"></div>
+            <div class="timeline-number">06</div>
+            <div class="timeline-name">What Happens Next?</div>
+            <div class="timeline-status">Unknown</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         TRANSPARENCY
+    ========================= -->
+
+    <section
+      class="transparency"
+      id="transparency"
+    >
+      <div class="container">
+
+        <div class="section-number reveal">
+          06 / Transparency
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="transparency-title reveal">
+          WHERE DOES<br />
+          THE MONEY GO?
+        </h2>
+
+        <p class="transparency-copy reveal">
+          We don't want you to take our word for it.
+          Every contribution and expense will be recorded.
+        </p>
+
+        <div class="stats">
+
+          <div class="stat reveal">
+            <div class="stat-label">
+              Funds raised
+            </div>
+
+            <div class="stat-value">
+              0 DH
+            </div>
+          </div>
+
+          <div class="stat reveal">
+            <div class="stat-label">
+              Funds spent
+            </div>
+
+            <div class="stat-value">
+              0 DH
+            </div>
+          </div>
+
+          <div class="stat reveal">
+            <div class="stat-label">
+              Current milestone
+            </div>
+
+            <div class="stat-value">
+              0 / 5,000 DH
+            </div>
+          </div>
+
+        </div>
+
+        <br />
+
+        <a
+          href="#"
+          class="cta reveal"
+        >
+          View full record →
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         SUPPORT
+    ========================= -->
+
+    <section id="support">
+      <div class="container">
+
+        <div class="section-number reveal">
+          07 / Support
+        </div>
+
+        <div class="section-line line-reveal"></div>
+
+        <h2 class="support-title reveal">
+          WANT TO HELP<br />
+          BUILD PR1ME?
+        </h2>
+
+        <div class="support-grid">
+
+          <a href="#" class="support-card reveal">
+
+            <div class="support-number">
+              01
+            </div>
+
+            <div>
+              <div class="support-name">
+                CONTRIBUTE →
+              </div>
+
+              <div class="support-description">
+                From 50 DH
+              </div>
+            </div>
+
+          </a>
+
+          <a href="#" class="support-card reveal">
+
+            <div class="support-number">
+              02
+            </div>
+
+            <div>
+              <div class="support-name">
+                SHARE →
+              </div>
+
+              <div class="support-description">
+                Send the experiment to someone who might care.
+              </div>
+            </div>
+
+          </a>
+
+          <a href="#" class="support-card reveal">
+
+            <div class="support-number">
+              03
+            </div>
+
+            <div>
+              <div class="support-name">
+                COLLABORATE →
+              </div>
+
+              <div class="support-description">
+                Skills, advice, equipment, partnerships or opportunities.
+              </div>
+            </div>
+
+          </a>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         FINAL
+    ========================= -->
+
+    <section class="final">
+      <div class="container">
+
+        <h2 class="final-title reveal">
+          <span>LET'S SEE</span>
+          <span>WHERE THIS</span>
+          <span class="gold">GOES.</span>
+        </h2>
+
+        <div class="final-meta reveal">
+
+          <div class="final-question">
+            5,000 DH → ?
+          </div>
+
+          <a
+            href="#support"
+            class="cta"
+          >
+            Support the build
+          </a>
+
+          <div class="instagram">
+            Instagram — @pr1me.ma
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+    <div class="footer-inner">
+
+      <img
+        src="assets/pr1me-dark.svg"
+        alt="PR1ME"
+        class="footer-logo"
+      />
+
+      <div class="footer-copy">
+        A community-supported experiment from Morocco.
+      </div>
+
+    </div>
+  </footer>
+
+
+  <script>
+
+    /* =========================
+       LOADER
+    ========================= */
+
+    window.addEventListener("load", () => {
+
+      setTimeout(() => {
+        document
+          .getElementById("loader")
+          .classList.add("hidden");
+
+        document
+          .querySelectorAll(".hero .reveal")
+          .forEach((element, index) => {
+
+            setTimeout(() => {
+              element.classList.add("visible");
+            }, index * 120);
+
+          });
+
+        document
+          .getElementById("heroProgress")
+          .style.width = "0%";
+
+      }, 700);
+
+    });
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    const header = document.getElementById("header");
+
+    window.addEventListener("scroll", () => {
+
+      if (window.scrollY > 40) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+
+    });
+
+
+    /* =========================
+       SCROLL REVEALS
+    ========================= */
+
+    const revealObserver =
+      new IntersectionObserver(
+        (entries) => {
+
+          entries.forEach((entry) => {
+
+            if (entry.isIntersecting) {
+
+              entry.target.classList.add("visible");
+
+              revealObserver.unobserve(entry.target);
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.12
+        }
+      );
+
+
+    document
+      .querySelectorAll(".reveal, .line-reveal")
+      .forEach((element) => {
+
+        revealObserver.observe(element);
+
+      });
+
+
+    /* =========================
+       TIMELINE
+    ========================= */
+
+    const timeline =
+      document.getElementById("timeline");
+
+    const timelineProgress =
+      document.getElementById("timelineProgress");
+
+    const timelineItems =
+      document.querySelectorAll(".timeline-item");
+
+
+    function updateTimeline() {
+
+      if (!timeline) return;
+
+      const rect =
+        timeline.getBoundingClientRect();
+
+      const viewport =
+        window.innerHeight;
+
+      const start =
+        viewport * 0.75;
+
+      const end =
+        viewport * 0.25;
+
+      const total =
+        rect.height;
+
+      const passed =
+        Math.min(
+          Math.max(
+            start - rect.top,
+            0
+          ),
+          total
+        );
+
+      timelineProgress.style.height =
+        passed + "px";
+
+
+      timelineItems.forEach((item) => {
+
+        const itemRect =
+          item.getBoundingClientRect();
+
+        if (
+          itemRect.top <
+          viewport * 0.62
+        ) {
+
+          item.classList.add("active");
+
+        }
+
+      });
+
+    }
+
+
+    window.addEventListener(
+      "scroll",
+      updateTimeline,
+      { passive: true }
+    );
+
+    updateTimeline();
+
+
+    /* =========================
+       LANGUAGE BUTTON
+    ========================= */
+
+    const languageSwitch =
+      document.getElementById(
+        "languageSwitch"
+      );
+
+    languageSwitch.addEventListener(
+      "click",
+      () => {
+
+        alert(
+          "Arabic version is coming in the next build."
+        );
+
+      }
+    );
+
+
+  </script>
+
 </body>
 </html>
