@@ -116,7 +116,15 @@ html[lang=ar] h2,html[lang=ar] .ft{line-height:1.2}
 .svc b{padding-top:8px;color:var(--gold);font-size:10px}
 .svc h3{font-size:clamp(28px,6vw,56px);font-weight:800;letter-spacing:-.04em;line-height:1;text-transform:uppercase}
 .svc p{margin-top:9px;color:var(--muted);font-size:13px}
-.st{max-width:900px;margin-top:90px;font-size:0.7em ;line-height:1.08;letter-spacing:-.035em}
+.st{
+  max-width:900px;
+  margin-top:90px;
+  font-size:clamp(24px,5vw,50px);
+  line-height:1.08;
+  letter-spacing:-.035em;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Tahoma,Roboto,Helvetica,Arial,sans-serif;
+  font-weight:800;
+}
 .st strong{color:var(--gold);font-weight:400}
 
 /* timeline — one coherent system: track + progress + dots only, no stray backgrounds */
@@ -295,7 +303,7 @@ footer{padding:26px 0 36px;border-top:1px solid var(--line)}
     <div class="rv"><b>03</b><div><h3 data-i="s3"></h3><p data-i="d3"></p></div></div>
     <div class="rv"><b>04</b><div><h3 data-i="s4"></h3><p data-i="d4"></p></div></div>
   </div>
-  <p class="st tan rv" data-i="st"></p>
+  <p class="st rv" data-i="st"></p>
 </div></section>
 
 <!-- 05 TIMELINE -->
